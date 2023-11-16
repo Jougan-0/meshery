@@ -33,7 +33,7 @@ jobs:
         env:
            CRED: ${{ secrets.INTEGRATION_SPREADSHEET_CRED }}
         run: |
-            cd scripts/component_generation; GOPROXY=https://proxy.golang.org,direct GOSUMDB=off go run main.go 1DZHnzxYWOlJ69Oguz4LkRVTFM79kC2tuvdwizOJmeMw
+            cd scripts/component_generation; GOPROXY=https://proxy.golang.org,direct GOSUMDB=off go run main.go 17pCf_DJsmFCLPCbzh8Rm__59fX8s-fTH7mNpIb1p08Y
       - name: Commit changes 
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
