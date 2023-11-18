@@ -42,7 +42,7 @@ jobs:
           commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           commit_options: "--signoff"
           commit_message: "New Meshmodel components generated"
-          branch: fix
+          branch: finaltest
       
       - name: Send Email on Meshmodel Generators Failure
         if: failure()
@@ -94,7 +94,7 @@ jobs:
           commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           commit_options: "--signoff"
           commit_message: "Meshmodel components updated"
-          branch: fix
+          branch: finaltest
       - name: Send Email on Meshmodel Updaters Failure
         if: failure()
         uses: dawidd6/action-send-mail@v3.7.1
