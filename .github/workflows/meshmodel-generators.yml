@@ -6,7 +6,7 @@ on:
 jobs:
   generate-components:
     name: Generate Components
-    if: github.repository == 'meshery/meshery'
+    if: github.repository == 'Jougan-0/meshery'
     runs-on: ubuntu-22.04
     steps:
       - name: Check out code
@@ -28,12 +28,12 @@ jobs:
 #             ${{ runner.os }}-go-
 
       - name: Pull changes from remote
-        run: git pull origin master
+        run: git pull origin Finallocaltest
       - name: Run component generation
         env:
            CRED: ${{ secrets.INTEGRATION_SPREADSHEET_CRED }}
         run: |
-            cd scripts/component_generation; GOPROXY=https://proxy.golang.org,direct GOSUMDB=off go run main.go 1DZHnzxYWOlJ69Oguz4LkRVTFM79kC2tuvdwizOJmeMw
+            cd scripts/component_generation; GOPROXY=https://proxy.golang.org,direct GOSUMDB=off go run main.go 14FIfKjeMmX0PN3H4a69xX3qMXn8KEc731lwmGGLLhYw
       - name: Commit changes 
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
@@ -42,7 +42,7 @@ jobs:
           commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           commit_options: "--signoff"
           commit_message: "New Meshmodel components generated"
-          branch: master
+          branch: Finallocaltest
       
       - name: Send Email on Meshmodel Generators Failure
         if: failure()
@@ -77,14 +77,14 @@ jobs:
         with:
           go-version: "1.21"
       - name: Pull changes from remote
-        run: git pull origin master    
+        run: git pull origin Finallocaltest    
       - name: Run component Updater
         env:
           CRED: ${{ secrets.INTEGRATION_SPREADSHEET_CRED }}
         run: |
             cd scripts/component_updater
             go build main.go
-            ./main https://docs.google.com/spreadsheets/d/e/2PACX-1vSgOXuiqbhUgtC9oNbJlz9PYpOEaFVoGNUFMIk4NZciFfQv1ewZg8ahdrWHKI79GkKK9TbmnZx8CqIe/pub\?gid\=0\&single\=true\&output\=csv --system meshery ../../server/meshmodel
+            ./main https://docs.google.com/spreadsheets/d/e/2PACX-1vR6jqhjE90OCbFh0qqW_dJSLBxUBYenf8fHyHu6SO-YvKC_d9RRO9bGXw2DsiUeRt1RKYvBOvAl9fgs/pub?output=csv --system meshery ../../server/meshmodel
       
       - name: Commit changes 
         uses: stefanzweifel/git-auto-commit-action@v4
@@ -94,7 +94,7 @@ jobs:
           commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           commit_options: "--signoff"
           commit_message: "Meshmodel components updated"
-          branch: master
+          branch: Finallocaltest
       - name: Send Email on Meshmodel Updaters Failure
         if: failure()
         uses: dawidd6/action-send-mail@v3.7.1
