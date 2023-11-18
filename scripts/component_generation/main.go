@@ -567,7 +567,7 @@ func Spreadsheet(srv *sheets.Service, sheetName string, spreadsheet chan struct 
 				row := &sheets.ValueRange{
 					Values: values,
 				}
-				response2, err := srv.Spreadsheets.Values.Append(spreadsheetID, sheetName, row).ValueInputOption("USER_ENTERED").InsertDataOption("INSERT_ROWS").Context(context.Background()).Do()
+				response2, err := srv.Spreadsheets.Values.Append(spreadsheetID, rangeString, row).ValueInputOption("USER_ENTERED").InsertDataOption("INSERT_ROWS").Context(context.Background()).Do()
 				values = make([][]interface{}, 0)
 				batchSize = 100
 				if err != nil || response2.HTTPStatusCode != 200 {
@@ -594,7 +594,7 @@ func Spreadsheet(srv *sheets.Service, sheetName string, spreadsheet chan struct 
 			row := &sheets.ValueRange{
 				Values: values,
 			}
-			response2, err := srv.Spreadsheets.Values.Append(spreadsheetID, sheetName, row).ValueInputOption("USER_ENTERED").InsertDataOption("INSERT_ROWS").Context(context.Background()).Do()
+			response2, err := srv.Spreadsheets.Values.Append(spreadsheetID, rangeString, row).ValueInputOption("USER_ENTERED").InsertDataOption("INSERT_ROWS").Context(context.Background()).Do()
 			values = make([][]interface{}, 0)
 			batchSize = 100
 			if err != nil || response2.HTTPStatusCode != 200 {
@@ -607,7 +607,7 @@ func Spreadsheet(srv *sheets.Service, sheetName string, spreadsheet chan struct 
 		row := &sheets.ValueRange{
 			Values: values,
 		}
-		response2, err := srv.Spreadsheets.Values.Append(spreadsheetID, sheetName, row).ValueInputOption("USER_ENTERED").InsertDataOption("INSERT_ROWS").Context(context.Background()).Do()
+		response2, err := srv.Spreadsheets.Values.Append(spreadsheetID, rangeString, row).ValueInputOption("USER_ENTERED").InsertDataOption("INSERT_ROWS").Context(context.Background()).Do()
 		if err != nil || response2.HTTPStatusCode != 200 {
 			fmt.Println(err)
 		}
