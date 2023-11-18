@@ -84,7 +84,7 @@ jobs:
         run: |
             cd scripts/component_updater
             go build main.go
-            ./main https://docs.google.com/spreadsheets/d/e/2PACX-1vSgOXuiqbhUgtC9oNbJlz9PYpOEaFVoGNUFMIk4NZciFfQv1ewZg8ahdrWHKI79GkKK9TbmnZx8CqIe/pub\?gid\=0\&single\=true\&output\=csv --system meshery ../../server/meshmodel
+            ./main https://docs.google.com/spreadsheets/d/e/2PACX-1vRWZ2h37Ojyk1TDHntXEsj1HQkj-xjKgzAv1uaj9G6xy1DIgoNkSS52ewVQ9T1AzG5LENB2fLWAJ19H/pub\?gid\=0\&single\=true\&output\=csv --system meshery ../../server/meshmodel
       
       - name: Commit changes 
         uses: stefanzweifel/git-auto-commit-action@v4
