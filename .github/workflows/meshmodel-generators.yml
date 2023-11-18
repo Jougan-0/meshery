@@ -33,7 +33,7 @@ jobs:
         env:
            CRED: ${{ secrets.INTEGRATION_SPREADSHEET_CRED }}
         run: |
-            cd scripts/component_generation; GOPROXY=https://proxy.golang.org,direct GOSUMDB=off go run main.go 17pCf_DJsmFCLPCbzh8Rm__59fX8s-fTH7mNpIb1p08Y
+            cd scripts/component_generation; GOPROXY=https://proxy.golang.org,direct GOSUMDB=off go run main.go 1JxaC_D1Q7nLkXiRyZmWWPJUtUmXqDb0w87tOeiAG60c
       - name: Commit changes 
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
@@ -84,7 +84,7 @@ jobs:
         run: |
             cd scripts/component_updater
             go build main.go
-            ./main https://docs.google.com/spreadsheets/d/e/2PACX-1vRWZ2h37Ojyk1TDHntXEsj1HQkj-xjKgzAv1uaj9G6xy1DIgoNkSS52ewVQ9T1AzG5LENB2fLWAJ19H/pub\?gid\=0\&single\=true\&output\=csv --system meshery ../../server/meshmodel
+            ./main https://docs.google.com/spreadsheets/d/e/2PACX-1vQeLrPQWlcgiADdwK-lKPSBG4V2QhD3ijMuwnmh7XqahyzWR_x_0dnpmKjKWoTmpMUPU6bl3T1XVprY/pub\?gid\=0\&single\=true\&output\=csv --system meshery ../../server/meshmodel
       
       - name: Commit changes 
         uses: stefanzweifel/git-auto-commit-action@v4
