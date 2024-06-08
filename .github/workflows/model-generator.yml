@@ -83,7 +83,7 @@ jobs:
       - name: Run Model Updater
         run: |
           cd mesheryctl;
-          ./mesheryctl registry update -i ../server/meshmodel --spreadsheet-id "1DZHnzxYWOlJ69Oguz4LkRVTFM79kC2tuvdwizOJmeMw"  --spreadsheet-cred "${{ secrets.INTEGRATION_SPREADSHEET_CRED }}"
+          ./mesheryctl registry update -i ../server/meshmodel --spreadsheet-id "11msGGeLX97knVpIPF4WDbz9V4OxqTLuhMFDlzx9ki1E"  --spreadsheet-cred "${{ secrets.INTEGRATION_SPREADSHEET_CRED }}"
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
