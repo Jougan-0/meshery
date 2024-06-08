@@ -161,7 +161,7 @@ func updateModelsSheet(srv *sheets.Service, cred, sheetId string, values []*Mode
 	if err != nil {
 		return err
 	}
-	Log.Info("Appending", len(marshalledValues), "in the models sheet")
+	Log.Info("Appending ", len(marshalledValues), " in the models sheet")
 	err = appendSheet(srv, cred, sheetId, ModelsSheetAppendRange, marshalledValues)
 
 	return err
