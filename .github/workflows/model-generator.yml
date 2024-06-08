@@ -20,7 +20,7 @@ jobs:
           go-version: "1.21"
 
       - name: Pull changes from remote
-        run: git pull origin master
+        run: git pull origin yamltest
       - name: Build mesheryctl
         run: |
           cd mesheryctl; make;
@@ -76,7 +76,7 @@ jobs:
         with:
           go-version: "1.21"
       - name: Pull changes from remote
-        run: git pull origin master
+        run: git pull origin yamltest
       - name: Build mesheryctl
         run: |
           cd mesheryctl; make;
