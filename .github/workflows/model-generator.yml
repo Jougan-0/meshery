@@ -42,7 +42,7 @@ jobs:
           commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           commit_options: "--signoff"
           commit_message: "New Models generated"
-          branch: master
+          branch: yamltest
 
       - name: Send Email on Model Generator Failure
         if: failure()
@@ -92,7 +92,7 @@ jobs:
           commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           commit_options: "--signoff"
           commit_message: "Models updated"
-          branch: master
+          branch: yamltest
       - name: Send Email on Model Updaters Failure
         if: failure()
         uses: dawidd6/action-send-mail@v3.7.1
