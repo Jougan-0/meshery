@@ -55,7 +55,7 @@ var (
 )
 var (
 	artifactHubCount        = 0
-	artifactHubRateLimit    = 110
+	artifactHubRateLimit    = 120
 	artifactHubRateLimitDur = 5 * time.Minute
 	artifactHubMutex        sync.Mutex
 )
