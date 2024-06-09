@@ -199,7 +199,7 @@ func InvokeGenerationFromSheet(wg *sync.WaitGroup) error {
 				return
 			}
 			if count%100 == 0 && count != 0 {
-				time.Sleep(10 * time.Minute)
+				time.Sleep(5 * time.Minute)
 			}
 			if model.Registrant == "Artifact Hub" {
 				count++
