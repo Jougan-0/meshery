@@ -34,15 +34,15 @@ jobs:
         with:
           name: generate-logs
           path: ~/.meshery/logs/
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_user_name: l5io
-          commit_user_email: ci@layer5.io
-          commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          commit_options: "--signoff"
-          commit_message: "New Models generated"
-          branch: yamltest
+      # - name: Commit changes
+      #   uses: stefanzweifel/git-auto-commit-action@v5
+      #   with:
+      #     commit_user_name: l5io
+      #     commit_user_email: ci@layer5.io
+      #     commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+      #     commit_options: "--signoff"
+      #     commit_message: "New Models generated"
+      #     branch: yamltest
 
       - name: Send Email on Model Generator Failure
         if: failure()
@@ -84,15 +84,15 @@ jobs:
         run: |
           cd mesheryctl;
           ./mesheryctl registry update -i ../server/meshmodel --spreadsheet-id "11msGGeLX97knVpIPF4WDbz9V4OxqTLuhMFDlzx9ki1E"  --spreadsheet-cred "${{ secrets.INTEGRATION_SPREADSHEET_CRED }}"
-      - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_user_name: l5io
-          commit_user_email: ci@layer5.io
-          commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          commit_options: "--signoff"
-          commit_message: "Models updated"
-          branch: yamltest
+      # - name: Commit changes
+      #   uses: stefanzweifel/git-auto-commit-action@v5
+      #   with:
+      #     commit_user_name: l5io
+      #     commit_user_email: ci@layer5.io
+      #     commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+      #     commit_options: "--signoff"
+      #     commit_message: "Models updated"
+      #     branch: yamltest
       - name: Send Email on Model Updaters Failure
         if: failure()
         uses: dawidd6/action-send-mail@v3.7.1

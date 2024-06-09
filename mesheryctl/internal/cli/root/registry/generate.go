@@ -53,7 +53,24 @@ var (
 	totalAggregateModel int
 	defVersion          = "v1.0.0"
 )
-var count int = 0
+var (
+	artifactHubCount        = 0
+	artifactHubRateLimit    = 110
+	artifactHubRateLimitDur = 5 * time.Minute
+	artifactHubMutex        sync.Mutex
+)
+
+func rateLimitArtifactHub() {
+	artifactHubMutex.Lock()
+	defer artifactHubMutex.Unlock()
+
+	if artifactHubCount > 0 && artifactHubCount%artifactHubRateLimit == 0 {
+		utils.Log.Info("Rate limit reached for Artifact Hub. Sleeping for 5 minutes...")
+		time.Sleep(artifactHubRateLimitDur)
+	}
+	artifactHubCount++
+}
+
 var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "Generate Models",
@@ -198,12 +215,10 @@ func InvokeGenerationFromSheet(wg *sync.WaitGroup) error {
 				utils.Log.Error(ErrGenerateModel(err, model.Model))
 				return
 			}
-			if count%100 == 0 && count != 0 {
-				time.Sleep(10 * time.Minute)
-			}
 			if model.Registrant == "Artifact Hub" {
-				count++
 				time.Sleep(1 * time.Second)
+				rateLimitArtifactHub()
+
 			}
 
 			pkg, err := generator.GetPackage()
