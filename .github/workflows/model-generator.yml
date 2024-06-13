@@ -27,7 +27,7 @@ jobs:
       - name: Generate Models and Components
         run: |
           cd mesheryctl;
-          ./mesheryctl registry generate --spreadsheet-id "11msGGeLX97knVpIPF4WDbz9V4OxqTLuhMFDlzx9ki1E" --spreadsheet-cred "${{ secrets.INTEGRATION_SPREADSHEET_CRED }}"
+          ./mesheryctl registry generate --spreadsheet-id "1DZHnzxYWOlJ69Oguz4LkRVTFM79kC2tuvdwizOJmeMw" --spreadsheet-cred "${{ secrets.INTEGRATION_SPREADSHEET_CRED }}"
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -53,8 +53,8 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: GitHub Actions - Workflow Failure
           from: |
-            "Model Generator" <testworkflow08@gmail.com>
-          to: prasantmishra2018@gmail.com
+            "Model Generator" <no-reply@meshery.io>
+          to: developers@meshery.io
           body: |
             The GitHub Actions workflow in ${{ github.repository }} has failed.
             You can find more details in the GitHub Actions log ${{ github.workflow }}.
@@ -67,19 +67,19 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: generate-logs
-          path: ./logs/registry
+          path: .meshery/logs/registry
       - name: Check registry-generate-error file
         id: check-registry-generate-error
         run: |
-          if [ -s ./logs/registry/Errors ]; then
-            echo "Errors is not empty"
-            echo "Errors=true" >> $GITHUB_ENV
+          if [ -s .mehsery/logs/Errors ]; then
+            echo "registry-generate-error is not empty"
+            echo "registry-generate-error=true" >> $GITHUB_ENV
           else
-            echo "Errors is empty"
-            echo "Errors=false" >> $GITHUB_ENV
+            echo "registry-generate-error is empty"
+            echo "registry-generate-error=false" >> $GITHUB_ENV
           fi
       - name: Send Email on Error Logs
-        if: env.Errors == 'true'
+        if: env.registry-generate-error == 'true'
         uses: dawidd6/action-send-mail@v3.7.1
         with:
           server_address: smtp.gmail.com
@@ -92,7 +92,7 @@ jobs:
           to: prasantmishra2018@gmail.com
           body: |
             The model generation process encountered errors. Please find the attached error log for details.
-          attachments: ./logs/registry/Errors
+          attachments: .meshery/logs/Errors
   update-components:
     name: Update Components
     needs: generate-components
@@ -116,7 +116,7 @@ jobs:
       - name: Run Model Updater
         run: |
           cd mesheryctl;
-          ./mesheryctl registry update -i ../server/meshmodel --spreadsheet-id "11msGGeLX97knVpIPF4WDbz9V4OxqTLuhMFDlzx9ki1E"  --spreadsheet-cred "${{ secrets.INTEGRATION_SPREADSHEET_CRED }}"
+          ./mesheryctl registry update -i ../server/meshmodel --spreadsheet-id "1DZHnzxYWOlJ69Oguz4LkRVTFM79kC2tuvdwizOJmeMw"  --spreadsheet-cred "${{ secrets.INTEGRATION_SPREADSHEET_CRED }}"
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
@@ -136,8 +136,8 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: GitHub Actions - Workflow Failure
           from: |
-            "Model Updater" <testworkflow08@gmail.com>
-          to: prasantmishra2018@gmail.com
+            "Model Updater" <no-reply@meshery.io>
+          to: developers@meshery.io
           body: |
             The GitHub Actions workflow in ${{ github.repository }} has failed.
             You can find more details in the GitHub Actions log ${{ github.workflow }}.
