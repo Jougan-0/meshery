@@ -53,8 +53,8 @@ jobs:
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: GitHub Actions - Workflow Failure
           from: |
-            "Model Generator" <no-reply@meshery.io>
-          to: developers@meshery.io
+            "Model Generator" <shlokmishr08@gmail.com>
+          to: prasantmishra2018@gmail.com
           body: |
             The GitHub Actions workflow in ${{ github.repository }} has failed.
             You can find more details in the GitHub Actions log ${{ github.workflow }}.
