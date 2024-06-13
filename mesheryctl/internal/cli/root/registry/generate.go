@@ -152,7 +152,7 @@ func InvokeGenerationFromSheet(wg *sync.WaitGroup) error {
 		logModelGenerationSummary(modelToCompGenerateTracker)
 
 		utils.Log.UpdateLogOutput(os.Stdout)
-		utils.LogError.UpdateLogOutput(os.Stderr)
+		utils.LogError.UpdateLogOutput(os.Stdout)
 		utils.Log.Info(fmt.Sprintf("Summary: %d models, %d components generated.", totalAggregateModel, totalAggregateComponents))
 
 		utils.Log.Info("See ", logDirPath, " for detailed logs.")
