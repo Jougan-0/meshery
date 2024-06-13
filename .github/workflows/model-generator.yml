@@ -71,7 +71,7 @@ jobs:
       - name: Check registry-generate-error file
         id: check-registry-generate-error
         run: |
-          if [ -s .mehsery/logs/Errors ]; then
+          if [ -s ~/.meshery/logs/registry/Errors ]; then
             echo "registry-generate-error is not empty"
             echo "registry-generate-error=true" >> $GITHUB_ENV
           else
