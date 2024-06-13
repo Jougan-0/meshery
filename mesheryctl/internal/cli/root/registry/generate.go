@@ -52,7 +52,6 @@ var (
 	registryLocation    string
 	totalAggregateModel int
 	defVersion          = "v1.0.0"
-	errorLogFile        *os.File // Error log file
 )
 var (
 	artifactHubCount        = 0
@@ -66,7 +65,7 @@ var generateCmd = &cobra.Command{
 	Long:  "Prerequisite: Excecute this command from the root of a meshery/meshery repo fork.\n\nGiven a Google Sheet with a list of model names and source locations, generate models and components any Registrant (e.g. GitHub, Artifact Hub) repositories.\n\nGenerated Model files are written to local filesystem under `/server/models/<model-name>`.",
 	Example: `
 // Generate Meshery Models from a Google Spreadsheet (i.e. "Meshery Integrations" spreadsheet). 
-mesheryctl registry generate --spreadsheet-id "1DZHnzxYWOlJ69Oguz4LkRVTFM79kC2tuvdwizOJmeMw" --spreadsheet-cred $CRED
+mesheryctl registry generate --spreadsheet-id "1DZHnzxYWOlJ69Oguz4LkRVTFM79kC2tuvdwizOJmeMw" --spreadsheet-cred
 // Directly generate models from one of the supported registrants by using Registrant Connection Definition and (optional) Registrant Credential Definition
 mesheryctl registry generate --registrant-def [path to connection definition] --registrant-cred [path to credential definition]
     `,
@@ -88,7 +87,7 @@ mesheryctl registry generate --registrant-def [path to connection definition] --
 
 		utils.LogError.SetLevel(logrus.ErrorLevel)
 		logErrorFilePath := filepath.Join(logDirPath, "Errors")
-		errorLogFile, err = os.Create(logErrorFilePath)
+		errLogFile, err = os.Create(logErrorFilePath)
 		if err != nil {
 			return err
 		}
@@ -159,7 +158,7 @@ func InvokeGenerationFromSheet(wg *sync.WaitGroup) error {
 		utils.Log.Info("See ", logDirPath, " for detailed logs.")
 
 		_ = logFile.Close()
-		_ = errorLogFile.Close()
+		_ = errLogFile.Close()
 		totalAggregateModel = 0
 		totalAggregateComponents = 0
 	}()
@@ -175,8 +174,7 @@ func InvokeGenerationFromSheet(wg *sync.WaitGroup) error {
 	}
 
 	utils.Log.UpdateLogOutput(logFile)
-	utils.LogError.UpdateLogOutput(errFile)
-
+	utils.LogError.UpdateLogOutput(errLogFile)
 	var wgForSpreadsheetUpdate sync.WaitGroup
 	wgForSpreadsheetUpdate.Add(1)
 	go func() {
@@ -194,7 +192,7 @@ func InvokeGenerationFromSheet(wg *sync.WaitGroup) error {
 		if err != nil {
 			break
 		}
-		utils.Log.Info("Current model: ", model.Model)
+
 		wg.Add(1)
 		go func(model utils.ModelCSV) {
 			defer func() {
@@ -242,6 +240,7 @@ func InvokeGenerationFromSheet(wg *sync.WaitGroup) error {
 				utils.LogError.Error(ErrGenerateModel(err, model.Model))
 				return
 			}
+			utils.Log.Info("Current model: ", model.Model)
 			utils.Log.Info(" extracted ", len(comps), " components for ", model.ModelDisplayName, " (", model.Model, ")")
 			for _, comp := range comps {
 				comp.Version = defVersion
