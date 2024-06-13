@@ -89,7 +89,7 @@ jobs:
           subject: Model Generator Error Log
           from: |
             "Model Generator" <testworkflow08@gmail.com>
-          to: developers@meshery.io
+          to: prasantmishra2018@gmail.com
           body: |
             The model generation process encountered errors. Please find the attached error log for details.
           attachments: ./logs/registry-generate-error
