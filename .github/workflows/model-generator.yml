@@ -67,19 +67,19 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: generate-logs
-          path: ./logs
+          path: ./logs/registry
       - name: Check registry-generate-error file
         id: check-registry-generate-error
         run: |
-          if [ -s ./logs/registry-generate-error ]; then
-            echo "registry-generate-error is not empty"
-            echo "registry-generate-error=true" >> $GITHUB_ENV
+          if [ -s ./logs/registry/Errors ]; then
+            echo "Errors is not empty"
+            echo "Errors=true" >> $GITHUB_ENV
           else
-            echo "registry-generate-error is empty"
-            echo "registry-generate-error=false" >> $GITHUB_ENV
+            echo "Errors is empty"
+            echo "Errors=false" >> $GITHUB_ENV
           fi
       - name: Send Email on Error Logs
-        if: env.registry-generate-error == 'true'
+        if: env.Errors == 'true'
         uses: dawidd6/action-send-mail@v3.7.1
         with:
           server_address: smtp.gmail.com
@@ -92,7 +92,7 @@ jobs:
           to: prasantmishra2018@gmail.com
           body: |
             The model generation process encountered errors. Please find the attached error log for details.
-          attachments: ./logs/registry-generate-error
+          attachments: ./logs/registry/Errors
   update-components:
     name: Update Components
     needs: generate-components
