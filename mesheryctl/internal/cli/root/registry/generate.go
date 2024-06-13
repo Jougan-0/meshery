@@ -66,7 +66,7 @@ var generateCmd = &cobra.Command{
 	Long:  "Prerequisite: Excecute this command from the root of a meshery/meshery repo fork.\n\nGiven a Google Sheet with a list of model names and source locations, generate models and components any Registrant (e.g. GitHub, Artifact Hub) repositories.\n\nGenerated Model files are written to local filesystem under `/server/models/<model-name>`.",
 	Example: `
 // Generate Meshery Models from a Google Spreadsheet (i.e. "Meshery Integrations" spreadsheet). 
-mesheryctl registry generate --spreadsheet-id "1DZHnzxYWOlJ69Oguz4LkRVTFM79kC2tuvdwizOJmeMw" --spreadsheet-cred
+mesheryctl registry generate --spreadsheet-id "1DZHnzxYWOlJ69Oguz4LkRVTFM79kC2tuvdwizOJmeMw" --spreadsheet-cred $CRED
 // Directly generate models from one of the supported registrants by using Registrant Connection Definition and (optional) Registrant Credential Definition
 mesheryctl registry generate --registrant-def [path to connection definition] --registrant-cred [path to credential definition]
     `,
@@ -109,7 +109,6 @@ mesheryctl registry generate --registrant-def [path to connection definition] --
 
 		srv, err = mutils.NewSheetSRV(spreadsheeetCred)
 		if err != nil {
-			logError(ErrUpdateRegistry(err, modelLocation), "")
 			utils.LogError.Error(ErrUpdateRegistry(err, modelLocation))
 			return err
 		}
@@ -426,16 +425,6 @@ func logModelGenerationSummary(modelToCompGenerateTracker *store.GenerticThreadS
 	}
 
 	utils.Log.Info(fmt.Sprintf("-----------------------------\n-----------------------------\nGenerated %d models and %d components", totalAggregateModel, totalAggregateComponents))
-}
-
-func logError(err error, modelName string) {
-	utils.Log.Error(err)
-	if modelName != "" {
-		err = fmt.Errorf("model [%s]: %w", modelName, err)
-	}
-	if errorLogFile != nil {
-		_, _ = errorLogFile.WriteString(err.Error() + "\n")
-	}
 }
 
 func init() {
