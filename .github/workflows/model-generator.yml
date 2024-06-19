@@ -79,13 +79,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: generate-logs
-          path: ~/.meshery/logs/registry/
+          path: ./registry
 
       - name: List files in logs directory
-        run: ls -la ~/.meshery/logs/registry/
+        run: ls -la logs/registry/
 
       - name: Print Errors file content
-        run: cat ~/.meshery/logs/registry/Errors
+        run: cat ./registry/Errors
 
       - name: Check registry-generate-error file
         id: check-registry-generate-error
