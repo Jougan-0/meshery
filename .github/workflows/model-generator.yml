@@ -71,7 +71,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: generate-logs
-          path: ~/.meshery/logs/registry
+          path: ~/.meshery/logs/registry/
       - name: Check registry-generate-error file
         id: check-registry-generate-error
         run: |
