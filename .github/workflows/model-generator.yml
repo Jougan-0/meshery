@@ -81,7 +81,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: generate-logs
-          path: ./.meshery/logs/registry
+          path: .meshery/logs
+      - name: Print Errors file content
+        run: cat .meshery/logs/registry/Errors
+
 
       - name: List files in logs directory
         run: ls -la ./.meshery/logs/registry
