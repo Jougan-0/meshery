@@ -82,20 +82,11 @@ jobs:
         with:
           name: generate-logs
           path: .meshery/logs
-      - name: Print Errors file content
-        run: cat .meshery/logs/registry/Errors
-
-
-      - name: List files in logs directory
-        run: ls -la ./.meshery/logs/registry
-
-      - name: Print Errors file content
-        run: cat /.meshery/logs/registry/Errors
 
       - name: Check registry-generate-error file
         id: check-registry-generate-error
         run: |
-          if [ -s ~/.meshery/logs/registry/Errors ]; then
+          if [ -s .meshery/logs/registry/Errors ]; then
             echo "registry-generate-error is not empty"
             echo "registry-generate-error=true" >> $GITHUB_ENV
           else
@@ -118,7 +109,7 @@ jobs:
           body: |
             The Model Generator action encountered errors for several models. For a detailed understanding of the issues, please refer to the attached error logs in the email.
             If you need additional information, please review the [Model Generator and Updater](https://github.com/meshery/meshery/actions/runs/${{ github.run_id }}).
-          attachments: ~/.meshery/logs/registry/Errors
+          attachments: .meshery/logs/registry/Errors
 
   update-components:
     if: github.repository == 'Jougan-0/meshery'
