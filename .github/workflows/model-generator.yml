@@ -22,21 +22,27 @@ jobs:
 
       - name: Pull changes from remote
         run: git pull origin check
+
       - name: Build mesheryctl
         run: |
-          cd mesheryctl; make;
+          cd mesheryctl
+          make
+
       - name: Generate Models and Components
         run: |
-          cd mesheryctl;
+          cd mesheryctl
           ./mesheryctl registry generate --spreadsheet-id "11msGGeLX97knVpIPF4WDbz9V4OxqTLuhMFDlzx9ki1E" --spreadsheet-cred "${{ secrets.INTEGRATION_SPREADSHEET_CRED }}"
+
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: generate-logs
           path: ~/.meshery/logs/
+
       - name: Pull changes from remote
         run: git pull origin check
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
@@ -46,6 +52,7 @@ jobs:
           commit_options: "--signoff"
           commit_message: "New Models generated"
           branch: check
+
       - name: Send Email on Model Generator Failure
         if: failure()
         uses: dawidd6/action-send-mail@v3.7.1
@@ -61,6 +68,7 @@ jobs:
           body: |
             The GitHub Actions workflow in ${{ github.repository }} has failed.
             You can find more details in the GitHub Actions log ${{ github.workflow }}.
+
   check-and-email-registry-generate-error:
     if: github.repository == 'Jougan-0/meshery'
     name: Check and Email Error Log
@@ -72,6 +80,7 @@ jobs:
         with:
           name: generate-logs
           path: ~/.meshery/logs/registry/
+
       - name: Check registry-generate-error file
         id: check-registry-generate-error
         run: |
@@ -82,6 +91,7 @@ jobs:
             echo "registry-generate-error is empty"
             echo "registry-generate-error=false" >> $GITHUB_ENV
           fi
+
       - name: Send Email on Error Logs
         if: env.registry-generate-error == 'true'
         uses: dawidd6/action-send-mail@v3.7.1
@@ -95,9 +105,10 @@ jobs:
             "Model Generator" <no-reply@meshery.io>
           to: prasantmishra2018@gmail.com
           body: |
-               The Model Generator action encountered errors for several models. For a detailed understanding of the issues, please refer to the attached error logs in the email. 
-               If you need additional information, please review the [Model Generator and Updater](https://github.com/meshery/meshery/actions/runs/${{ github.run_id }}).
+            The Model Generator action encountered errors for several models. For a detailed understanding of the issues, please refer to the attached error logs in the email.
+            If you need additional information, please review the [Model Generator and Updater](https://github.com/meshery/meshery/actions/runs/${{ github.run_id }}).
           attachments: ~/.meshery/logs/registry/Errors
+
   update-components:
     if: github.repository == 'Jougan-0/meshery'
     name: Update Components
@@ -114,17 +125,23 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: "1.21"
+
       - name: Pull changes from remote
         run: git pull origin check
+
       - name: Build mesheryctl
         run: |
-          cd mesheryctl; make;
+          cd mesheryctl
+          make
+
       - name: Run Model Updater
         run: |
-          cd mesheryctl;
-          ./mesheryctl registry update -i ../server/meshmodel --spreadsheet-id "11msGGeLX97knVpIPF4WDbz9V4OxqTLuhMFDlzx9ki1E"  --spreadsheet-cred "${{ secrets.INTEGRATION_SPREADSHEET_CRED }}"
+          cd mesheryctl
+          ./mesheryctl registry update -i ../server/meshmodel --spreadsheet-id "11msGGeLX97knVpIPF4WDbz9V4OxqTLuhMFDlzx9ki1E" --spreadsheet-cred "${{ secrets.INTEGRATION_SPREADSHEET_CRED }}"
+
       - name: Pull changes from remote
-        run: git pull origin check     
+        run: git pull origin check
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
@@ -134,7 +151,8 @@ jobs:
           commit_options: "--signoff"
           commit_message: "Models updated"
           branch: check
-      - name: Send Email on Model Updaters Failure
+
+      - name: Send Email on Model Updater Failure
         if: failure()
         uses: dawidd6/action-send-mail@v3.7.1
         with:
