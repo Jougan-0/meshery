@@ -81,6 +81,12 @@ jobs:
           name: generate-logs
           path: ~/.meshery/logs/registry/
 
+      - name: List files in logs directory
+        run: ls -la ~/.meshery/logs/registry/
+
+      - name: Print Errors file content
+        run: cat ~/.meshery/logs/registry/Errors
+
       - name: Check registry-generate-error file
         id: check-registry-generate-error
         run: |
@@ -93,7 +99,7 @@ jobs:
           fi
 
       - name: Send Email on Error Logs
-        if: env.registry-generate-error == 'false'
+        if: env.registry-generate-error == 'true'
         uses: dawidd6/action-send-mail@v3.7.1
         with:
           server_address: smtp.gmail.com
