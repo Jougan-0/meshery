@@ -75,6 +75,8 @@ jobs:
     runs-on: ubuntu-22.04
     needs: generate-components
     steps:
+      - name: path
+        run: pwd
       - name: Download registry-generate-error
         uses: actions/download-artifact@v4
         with:
