@@ -99,6 +99,12 @@ func (h *Handler) ViewHandler(responseWriter http.ResponseWriter, request *http.
 		http.Error(responseWriter, err.Error(), http.StatusBadRequest)
 		return
 	}
+	homedir, err := os.UserHomeDir()
+	if err != nil {
+		http.Error(responseWriter, err.Error(), http.StatusBadRequest)
+		return
+	}
+	filePath = filepath.Join(homedir, filePath)
 	file, err := os.Open(filePath)
 	if err != nil {
 		http.Error(responseWriter, err.Error(), http.StatusInternalServerError)
@@ -140,7 +146,12 @@ func (h *Handler) DownloadHandler(responseWriter http.ResponseWriter, request *h
 		return
 	}
 	defer file.Close()
-
+	homedir, err := os.UserHomeDir()
+	if err != nil {
+		http.Error(responseWriter, err.Error(), http.StatusBadRequest)
+		return
+	}
+	filePath = filepath.Join(homedir, filePath)
 	fileName := filepath.Base(filePath)
 	responseWriter.Header().Set("Content-Type", "text/plain")
 	responseWriter.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s\"", fileName))

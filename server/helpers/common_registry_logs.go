@@ -166,7 +166,8 @@ func FailedEventCompute(hostname string, mesheryInstanceID gofrs.UUID, provider 
 		return "", err
 	}
 	if failedMsg != "" {
-		filePath := viper.GetString("REGISTRY_LOG_FILE")
+		filePath := ".meshery/logs/registry/registry-logs.log"
+
 		errorEventBuilder := events.NewEvent().FromUser(mesheryInstanceID).FromSystem(mesheryInstanceID).WithCategory("registration").WithAction("get_summary")
 		errorEventBuilder.WithSeverity(events.Error).WithDescription(failedMsg)
 		errorEvent := errorEventBuilder.Build()
