@@ -5,21 +5,21 @@
   "name": "edp-install",
   "displayName": "EDP Install",
   "description": "",
-  "status": "enabled",
+  "status": "ignored",
   "hostID": "00000000-0000-0000-0000-000000000000",
   "registrant": {
    "hostname": "artifacthub"
   },
   "category": {
-   "name": "Provisioning",
+   "name": "Uncategorized",
    "metadata": null
   },
-  "subCategory": "Automation \u0026 Configuration",
+  "subCategory": "Uncategorized",
   "metadata": {
    "capabilities": "",
    "defaultData": "",
    "isAnnotation": false,
-   "primaryColor": "#00ABCD",
+   "primaryColor": "#00B39F",
    "secondaryColor": "#00D3A9",
    "shape": "circle",
    "shapePolygonPoints": "",

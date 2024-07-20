@@ -3,7 +3,7 @@
   "schemaVersion": "models.meshery.io/v1beta1",
   "version": "v1.0.0",
   "name": "kmodules-crds",
-  "displayName": "AppsCode Kmodules",
+  "displayName": "Kmodules Crds",
   "description": "",
   "status": "ignored",
   "hostID": "00000000-0000-0000-0000-000000000000",

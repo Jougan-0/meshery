@@ -3,7 +3,7 @@
   "schemaVersion": "models.meshery.io/v1beta1",
   "version": "v1.0.0",
   "name": "cert-manager",
-  "displayName": "cert-manager",
+  "displayName": "Cert-Manager",
   "description": "",
   "status": "ignored",
   "hostID": "00000000-0000-0000-0000-000000000000",
@@ -14,7 +14,7 @@
    "name": "Provisioning",
    "metadata": null
   },
-  "subCategory": "Key Management Service",
+  "subCategory": "Key Management",
   "metadata": {
    "capabilities": "",
    "defaultData": "",

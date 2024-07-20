@@ -3,7 +3,7 @@
   "schemaVersion": "models.meshery.io/v1beta1",
   "version": "v1.0.0",
   "name": "admin-console-operator",
-  "displayName": "EPAM Delivery Platform",
+  "displayName": "Epam Delivery Platform (EDP) Admin Console",
   "description": "",
   "status": "enabled",
   "hostID": "00000000-0000-0000-0000-000000000000",

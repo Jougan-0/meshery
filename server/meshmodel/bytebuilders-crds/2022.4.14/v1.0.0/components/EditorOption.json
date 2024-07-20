@@ -10,7 +10,7 @@
    "schemaVersion": "models.meshery.io/v1beta1",
    "version": "v1.0.0",
    "name": "bytebuilders-crds",
-   "displayName": "ByteBuilders CRDs",
+   "displayName": "Bytebuilders Crds",
    "description": "",
    "status": "ignored",
    "hostID": "00000000-0000-0000-0000-000000000000",

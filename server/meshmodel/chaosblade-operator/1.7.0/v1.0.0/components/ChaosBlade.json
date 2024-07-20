@@ -10,7 +10,7 @@
    "schemaVersion": "models.meshery.io/v1beta1",
    "version": "v1.0.0",
    "name": "chaosblade-operator",
-   "displayName": "ChaosBlade",
+   "displayName": "Chaosblade Operator",
    "description": "",
    "status": "ignored",
    "hostID": "00000000-0000-0000-0000-000000000000",

@@ -10,7 +10,7 @@
    "schemaVersion": "models.meshery.io/v1beta1",
    "version": "v1.0.0",
    "name": "apache-shardingsphere-operator-charts",
-   "displayName": "Apache ShardingSphere",
+   "displayName": "Apache Shardingsphere Operator Charts",
    "description": "",
    "status": "enabled",
    "hostID": "00000000-0000-0000-0000-000000000000",

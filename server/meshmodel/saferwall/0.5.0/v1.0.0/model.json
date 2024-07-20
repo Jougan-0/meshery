@@ -5,16 +5,16 @@
   "name": "saferwall",
   "displayName": "Saferwall",
   "description": "",
-  "status": "enabled",
+  "status": "ignored",
   "hostID": "00000000-0000-0000-0000-000000000000",
   "registrant": {
    "hostname": "artifacthub"
   },
   "category": {
-   "name": "Security \u0026 Compliance",
+   "name": "Uncategorized",
    "metadata": null
   },
-  "subCategory": "Container Security",
+  "subCategory": "Uncategorized",
   "metadata": {
    "capabilities": "",
    "defaultData": "",

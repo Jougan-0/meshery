@@ -10,18 +10,18 @@
    "schemaVersion": "models.meshery.io/v1beta1",
    "version": "v1.0.0",
    "name": "altinity-clickhouse-operator",
-   "displayName": "Altinity ClickHouse",
+   "displayName": "Altinity Clickhouse Operator",
    "description": "",
-   "status": "enabled",
+   "status": "ignored",
    "hostID": "00000000-0000-0000-0000-000000000000",
    "registrant": {
     "hostname": "artifacthub"
    },
    "category": {
-    "name": "Database",
+    "name": "Uncategorized",
     "metadata": null
    },
-   "subCategory": "Application Definition \u0026 Image Build",
+   "subCategory": "Uncategorized",
    "metadata": {
     "capabilities": "",
     "defaultData": "",
@@ -52,7 +52,7 @@
    "secondaryColor": "#00D3A9",
    "shape": "circle",
    "shapePolygonPoints": "",
-   "status": "enabled",
+   "status": "ignored",
    "styleOverrides": "",
    "styles": "",
    "subCategory": "",

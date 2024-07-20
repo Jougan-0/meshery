@@ -3,9 +3,9 @@
   "schemaVersion": "models.meshery.io/v1beta1",
   "version": "v1.0.0",
   "name": "clickhouse",
-  "displayName": "ClickHouse",
+  "displayName": "Clickhouse",
   "description": "",
-  "status": "enabled",
+  "status": "ignored",
   "hostID": "00000000-0000-0000-0000-000000000000",
   "registrant": {
    "hostname": "artifacthub"

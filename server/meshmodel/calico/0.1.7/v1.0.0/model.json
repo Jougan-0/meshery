@@ -3,7 +3,7 @@
   "schemaVersion": "models.meshery.io/v1beta1",
   "version": "v1.0.0",
   "name": "calico",
-  "displayName": "Calico",
+  "displayName": "Project Calico",
   "description": "",
   "status": "ignored",
   "hostID": "00000000-0000-0000-0000-000000000000",
@@ -11,10 +11,10 @@
    "hostname": "artifacthub"
   },
   "category": {
-   "name": "Cloud Native Network",
+   "name": "Runtime",
    "metadata": null
   },
-  "subCategory": "Not Found",
+  "subCategory": "Cloud Native Network",
   "metadata": {
    "capabilities": "",
    "defaultData": "",
