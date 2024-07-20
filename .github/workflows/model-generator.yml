@@ -56,7 +56,6 @@ jobs:
           ./mesheryctl registry update -i ../server/meshmodel --spreadsheet-id "11msGGeLX97knVpIPF4WDbz9V4OxqTLuhMFDlzx9ki1E"  --spreadsheet-cred "${{ secrets.INTEGRATION_SPREADSHEET_CRED }}"
 
       - name: Commit changes
-        if: env.registry-generate-error == 'false'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_user_name: l5io
@@ -64,7 +63,7 @@ jobs:
           commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           commit_options: "--signoff"
           commit_message: "New Models generated and updated"
-          branch: master
+          branch: testWorkflowUpdate
 
       - name: Send Email on Workflow Failure
         if: failure()
