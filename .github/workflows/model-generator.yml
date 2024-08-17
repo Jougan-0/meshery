@@ -32,7 +32,7 @@ jobs:
       - name: Generate Models and Components
         run: |
           cd mesheryctl
-          ./mesheryctl registry generate --spreadsheet-id "1PmwPzh_wANUPfNTZe0JIsZCib4MBoEhvMRdTndgIUB8" --spreadsheet-cred "${{ secrets.INTEGRATION_SPREADSHEET_CRED }}"
+          ./mesheryctl registry generate --spreadsheet-id "1PmwPzh_wANUPfNTZe0JIsZCib4MBoEhvMRdTndgIUB8" --spreadsheet-cred "${{ secrets.INTEGRATION_SPREADSHEET_CRED }}" --model aad-pod-identity
 
       - name: Upload artifacts
         if: always()
@@ -63,16 +63,23 @@ jobs:
           git config user.name "l5io"
           git config user.email "ci@layer5.io"
           files=$(git diff --name-only)
-          batch_size=100 # Adjust this value as needed
+          batch_size=100 
+          count=0
           for file in $files; do
-            git add "$file"
-            if [ $(git diff --cached --name-only | wc -l) -ge $batch_size ]; then
-              git commit -m "Partial commit"
+            if [ -f "$file" ]; then
+              git add "$file"
+              count=$((count + 1))
+              if [ $count -ge $batch_size ]; then
+                git commit -m "Partial commit"
+                count=0
+              fi
             fi
           done
-          git commit -m "Final batch commit" # Commit remaining files
+          if [ $count -gt 0 ]; then
+            git commit -m "Final batch commit"
+          fi
           git push origin commitTime
-
+      
       - name: Send Email on Workflow Failure
         if: failure()
         uses: dawidd6/action-send-mail@v3.7.1
