@@ -58,27 +58,15 @@ jobs:
       - name: Pull changes from remote
         run: git pull origin commitTime
 
-      - name: Commit changes in batches
-        run: |
-          git config user.name "l5io"
-          git config user.email "ci@layer5.io"
-          files=$(git diff --name-only)
-          batch_size=1000 
-          count=0
-          for file in $files; do
-            if [ -f "$file" ]; then
-              git add "$file"
-              count=$((count + 1))
-              if [ $count -ge $batch_size ]; then
-                git commit -m "Partial commit"
-                count=0
-              fi
-            fi
-          done
-          if [ $count -gt 0 ]; then
-            git commit -m "Final batch commit"
-          fi
-          git push origin commitTime
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_user_name: l5io
+          commit_user_email: ci@layer5.io
+          commit_author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          commit_options: "--signoff"
+          commit_message: "New Models generated and updated"
+          branch: commitTime
       
       - name: Send Email on Workflow Failure
         if: failure()
