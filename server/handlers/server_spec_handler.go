@@ -18,6 +18,7 @@ type Version struct {
 	Outdated       *bool  `json:"outdated,omitempty"`
 	CommitSHA      string `json:"commitsha,omitempty"`
 	ReleaseChannel string `json:"release_channel,omitempty"`
+	Playground     bool   `json:"playground,omitempty"`
 }
 
 // swagger:route GET /api/system/version SystemAPI idGetSystemVersion
@@ -34,6 +35,7 @@ func (h *Handler) ServerVersionHandler(w http.ResponseWriter, _ *http.Request) {
 		Build:          viper.GetString("BUILD"),
 		CommitSHA:      viper.GetString("COMMITSHA"),
 		ReleaseChannel: viper.GetString("RELEASE_CHANNEL"),
+		Playground:     viper.GetBool("PLAYGROUND"),
 	}
 
 	// if r.Method != http.MethodGet {
