@@ -15,15 +15,8 @@
 package registry
 
 import (
-	"bytes"
-	"context"
-	"encoding/csv"
-	"fmt"
-	"io"
 	"os"
 	"path/filepath"
-	"strconv"
-	"strings"
 	"sync"
 	"time"
 
@@ -34,11 +27,7 @@ import (
 
 	"github.com/layer5io/meshery/mesheryctl/pkg/utils"
 	mutils "github.com/layer5io/meshkit/utils"
-	"github.com/layer5io/meshkit/utils/store"
-	"github.com/meshery/schemas/models/v1beta1/component"
-	v1beta1Model "github.com/meshery/schemas/models/v1beta1/model"
 
-	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"google.golang.org/api/sheets/v4"
 )
@@ -59,12 +48,6 @@ var (
 	totalAggregateModel int
 	defVersion          = "v1.0.0"
 )
-var (
-	artifactHubCount        = 0
-	artifactHubRateLimit    = 100
-	artifactHubRateLimitDur = 5 * time.Minute
-	artifactHubMutex        sync.Mutex
-)
 var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "Generate Models",
@@ -77,30 +60,12 @@ mesheryctl registry generate --registrant-def [path to connection definition] --
 // Generate a specific Model from a Google Spreadsheet (i.e. "Meshery Integrations" spreadsheet).
 mesheryctl registry generate --spreadsheet-id "1DZHnzxYWOlJ69Oguz4LkRVTFM79kC2tuvdwizOJmeMw" --spreadsheet-cred --model "[model-name]"
 // Generate Meshery Models and Component from csv files in a local directory.
-mesheryctl registry generate -directory <DIRECTORY_PATH>
+mesheryctl registry generate --directory <DIRECTORY_PATH>
     `,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		// Prerequisite check is needed - https://github.com/meshery/meshery/issues/10369
 		// TODO: Include a prerequisite check to confirm that this command IS being the executED from within a fork of the Meshery repo, and is being executed at the root of that fork.
-		//
 
-		err := os.MkdirAll(logDirPath, 0755)
-		if err != nil {
-			return ErrUpdateRegistry(err, modelLocation)
-		}
-		utils.Log.SetLevel(logrus.DebugLevel)
-		logFilePath := filepath.Join(logDirPath, "model-generation.log")
-		logFile, err = os.Create(logFilePath)
-		if err != nil {
-			return err
-		}
-
-		utils.LogError.SetLevel(logrus.ErrorLevel)
-		logErrorFilePath := filepath.Join(logDirPath, "registry-errors.log")
-		errorLogFile, err = os.Create(logErrorFilePath)
-		if err != nil {
-			return err
-		}
 		return nil
 	},
 
@@ -115,60 +80,41 @@ mesheryctl registry generate -directory <DIRECTORY_PATH>
 		}
 		var err error
 
-		// isCsvPathPresent := modelCSVFilePath != "" && componentCSVFilePath != ""
 		if csvDirectory == "" {
 			srv, err = mutils.NewSheetSRV(spreadsheeetCred)
 			if err != nil {
 				utils.LogError.Error(ErrUpdateRegistry(err, modelLocation))
-				return err
+				return nil
 			}
 
 			resp, err := srv.Spreadsheets.Get(spreadsheeetID).Fields().Do()
 			if err != nil || resp.HTTPStatusCode != 200 {
 				utils.LogError.Error(ErrUpdateRegistry(err, outputLocation))
-				return err
+				return nil
 			}
 
-			// Collect list of Models by name from spreadsheet
 			sheetGID = GetSheetIDFromTitle(resp, "Models")
-			// Collect list of corresponding Components by name from spreadsheet
 			componentSpredsheetGID = GetSheetIDFromTitle(resp, "Components")
 			// Collect list of corresponding relationship by name from spreadsheet
 			relationshipSpredsheetGID = GetSheetIDFromTitle(resp, "Relationships")
 		} else {
-			// Get all files in the directory
-			files, err := os.ReadDir(csvDirectory)
+			modelCSVFilePath, componentCSVFilePath, err = utils.GetCsv(csvDirectory)
 			if err != nil {
-				return fmt.Errorf("error reading the directory: %v", err)
-			}
-			for _, file := range files {
-				filePath := filepath.Join(csvDirectory, file.Name())
-				if !file.IsDir() && strings.HasSuffix(file.Name(), ".csv") {
-					headers, secondRow, err := getCSVHeader(filePath)
-					if utils.Contains("modelDisplayName", headers) != -1 || utils.Contains("modelDisplayName", secondRow) != -1 {
-						modelCSVFilePath = filePath
-					} else if utils.Contains("component", headers) != -1 || utils.Contains("component", secondRow) != -1 { // Check if the file matches the ComponentCSV structure
-						componentCSVFilePath = filePath
-					}
-					if err != nil {
-						return fmt.Errorf("error checking file %s: %v", file.Name(), err)
-					}
-
-				}
-			}
-
-			if modelCSVFilePath == "" || componentCSVFilePath == "" {
-				return fmt.Errorf("both ModelCSV and ComponentCSV files must be present in the directory")
+				utils.LogError.Error(err)
+				return nil
 			}
 		}
 
-		err = InvokeGenerationFromSheet(&wg)
+		err = utils.SetLogger(true)
+		if err != nil {
+			return err
+		}
+		err = utils.InvokeGenerationFromSheet(&wg, registryLocation, sheetGID, componentSpredsheetGID, spreadsheeetID, modelName, modelCSVFilePath, componentCSVFilePath, spreadsheeetCred)
 		if err != nil {
 			// meshkit
 			utils.LogError.Error(err)
-			return err
+			return nil
 		}
-
 		return err
 	},
 }

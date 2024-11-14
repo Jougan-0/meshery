@@ -5,7 +5,6 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
-	"time"
 
 	"github.com/layer5io/meshery/server/helpers/utils"
 	"github.com/layer5io/meshkit/logger"
@@ -16,26 +15,10 @@ import (
 
 var ModelsPath = "../meshmodel"
 
-const PoliciesPath = "../meshmodel/meshery-core/0.7.2/v1.0.0/policies"
+const PoliciesPath = "../meshmodel/kubernetes/v1.25.2/v1.0.0/policies"
 
-// versionInfo holds information about a version directory
-type versionInfo struct {
-	dirName string
-	modTime time.Time
-	dirPath string
-}
-
-// GetModelDirectoryPaths retrieves model definition directories based on the following criteria:
-// 1. Find the latest version of each model that contains a non-empty 'components' directory.
-//   - If the latest version has a non-empty 'components', use its path.
-//   - If not, search previous versions in descending order to find the nearest version with non-empty 'components'.
-//
-// 2. For all versions (including the one used for 'components'), check if the 'relationships' directory is non-empty and include their paths if so.
-// The returned directories are sorted with the latest version first.
 func GetModelDirectoryPaths(modelPath string) ([]string, error) {
-	dirEntries := []string{}
-
-	// Read all model directories (e.g., accurate, kubernetes)
+	dirEntries := make([]string, 0)
 	modelsDirs, err := os.ReadDir(modelPath)
 	if err != nil {
 		return dirEntries, meshkitUtils.ErrReadDir(err, fmt.Sprintf("failed to read models directory '%s'", modelPath))
@@ -45,12 +28,8 @@ func GetModelDirectoryPaths(modelPath string) ([]string, error) {
 		if !modelDir.IsDir() {
 			continue
 		}
-
-		modelName := modelDir.Name()
-		modelVersionsDirPath := filepath.Join(modelPath, modelName)
-
-		// Get all version directories sorted in descending order (latest first)
-		sortedVersionDirs, err := meshkitUtils.GetAllVersionDirsSortedDesc(modelVersionsDirPath)
+		modelVersionsDirPath := filepath.Join(modelPath, modelDir.Name())
+		modelVersionsDir, err := os.ReadDir(modelVersionsDirPath)
 		if err != nil {
 			continue
 		}
@@ -115,7 +94,6 @@ func getLatestModelDefDir(latestVersionDirPath string) (string, error) {
 func SeedComponents(log logger.Handler, hc *HandlerConfig, regm *meshmodel.RegistryManager) {
 	regErrorStore := NewRegistrationFailureLogHandler()
 	regHelper := registration.NewRegistrationHelper(utils.UI, regm, regErrorStore)
-
 	modelDirPaths, err := GetModelDirectoryPaths(ModelsPath)
 	if err != nil {
 		log.Error(ErrSeedingComponents(err))
